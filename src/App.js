@@ -1,10 +1,27 @@
 import "./App.css";
-import Child from "./components/Child";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
+import Admin from "./components/Admin";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useUserContext } from "./context/UserContext";
+
 function App() {
+  const { me } = useUserContext();
+
   return (
     <div className="App">
-      <h1>App component - Parent</h1>
-      <Child />
+      {me && <Link to="admin">Admin component</Link>}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </div>
   );
 }
